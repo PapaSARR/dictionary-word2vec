@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from . import dictionary
+from .embeddings import Embedding
 from .forms import DictForm, ParagraphErrorList
 from .dictionary import find_words
+
 # Create your views here.
 
 def home(request):
@@ -20,8 +21,8 @@ def home(request):
 				    negative_words += words[i][1:] + ' '                
 				else:                
 				    positive_words += words[i] + ' '    
-	        
-			responses = find_words(positive_words, negative_words)
+			model = Embedding('C:\home\Desktop\djangoProjects\dictionary_word2vec\dictionary\models\GoogleNews-vectors-negative300.bin.gz')
+			responses = model.find_words(positive_words, negative_words, 'C:\home\Desktop\djangoProjects\dictionary_word2vec\dictionary\models\words.txt')
 			context = {'form':form, 'responses': responses}
 		else:
 			context = {'form': form}  
